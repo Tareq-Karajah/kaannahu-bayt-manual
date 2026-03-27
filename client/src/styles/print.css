@@ -1,0 +1,134 @@
+/* Print Styles for Warm Minimalism Design */
+
+@media print {
+  /* Hide non-printable elements */
+  header,
+  .no-print,
+  button,
+  nav,
+  .sidebar,
+  [class*="scroll-top"],
+  .search-bar {
+    display: none !important;
+  }
+
+  /* Page setup */
+  body {
+    background: white;
+    color: #3D3D3D;
+    margin: 0;
+    padding: 20mm;
+    font-family: "Vazirmatn", Arial, sans-serif;
+  }
+
+  /* Typography */
+  h1 {
+    color: #8B9D6F;
+    border-bottom: 3px solid #C9A876;
+    padding-bottom: 10px;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    color: #8B9D6F;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    color: #A8956D;
+    page-break-after: avoid;
+  }
+
+  /* Preserve spacing */
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+    background-color: #8B9D6F;
+    color: white;
+  }
+
+  th {
+    background-color: #8B9D6F;
+    color: white;
+    padding: 10px;
+    text-align: right;
+    border: 1px solid #ccc;
+  }
+
+  td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  /* Important notes */
+  .note,
+  [class*="important"] {
+    background-color: #FFF8E7;
+    border: 1px solid #C9A876;
+    padding: 10px;
+    page-break-inside: avoid;
+  }
+
+  /* Steps */
+  .step {
+    page-break-inside: avoid;
+    background-color: #f5f1e8;
+    padding: 10px;
+    margin: 10px 0;
+    border-right: 4px solid #8B9D6F;
+  }
+
+  /* Lists */
+  ul,
+  ol {
+    page-break-inside: avoid;
+  }
+
+  li {
+    page-break-inside: avoid;
+  }
+
+  /* Links */
+  a {
+    color: #8B9D6F;
+    text-decoration: underline;
+  }
+
+  /* Avoid orphaned headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+  }
+
+  /* Avoid orphaned paragraphs */
+  p {
+    page-break-after: avoid;
+  }
+
+  /* Print date */
+  .print-date {
+    text-align: center;
+    color: #7A7A7A;
+    font-size: 12px;
+    margin-top: 20px;
+  }
+}
