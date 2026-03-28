@@ -1014,6 +1014,14 @@ export const quickActions = [
     color: "bg-red-100",
     sectionId: "safety",
   },
+  {
+    id: "expiry-tracker",
+    title: "تتبع الصلاحية",
+    description: "مراقبة تواريخ انتهاء المنتجات",
+    icon: "📦",
+    color: "bg-amber-100",
+    sectionId: "expiry-tracker",
+  },
 ];
 
 // بيانات الصفحة الرئيسية

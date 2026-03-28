@@ -4,11 +4,13 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import ExpiryTrackerPage from "./pages/ExpiryTrackerPage";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/expiry-tracker"} component={ExpiryTrackerPage} />
       {/* Final fallback route */}
       <Route component={Home} />
     </Switch>

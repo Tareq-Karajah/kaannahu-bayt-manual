@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
+import { useLocation } from "wouter";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
 import SectionView from "@/components/SectionView";
@@ -27,11 +28,17 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const [, setLocation] = useLocation();
+
   const handleSearchResult = (sectionId: string) => {
-    setActiveSection(sectionId);
-    setTimeout(() => {
-      document.querySelector("main")?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+    if (sectionId === "expiry-tracker") {
+      setLocation("/expiry-tracker");
+    } else {
+      setActiveSection(sectionId);
+      setTimeout(() => {
+        document.querySelector("main")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
   };
 
   return (
@@ -78,7 +85,7 @@ export default function Home() {
                   <h3 className="text-2xl font-bold text-primary mb-6">
                     الإجراءات السريعة
                   </h3>
-                  <QuickActions onActionClick={setActiveSection} />
+                  <QuickActions onActionClick={handleSearchResult} />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
