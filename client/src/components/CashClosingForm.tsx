@@ -41,7 +41,7 @@ export default function CashClosingForm() {
 
   // الحسابات التلقائية
   const calculations = useMemo(() => {
-    const total1 = formData.cash + formData.visa; // مجموع 1
+    const total1 = formData.cashIn + formData.cash + formData.visa; // مجموع 1
     const systemReport = total1 - formData.expenses; // تقرير السيستم
     const total2 =
       formData.visaReports.visaWells + formData.visaReports.visaFoodOnTime; // مجموع 2
@@ -113,7 +113,7 @@ export default function CashClosingForm() {
         "Cash In": record.cashIn,
         "Cash": record.cash,
         "Visa": record.visa,
-        "مجموع 1 (Cash + Visa)": total1,
+        "مجموع 1 (Cash In + Cash + Visa)": total1,
         "المصاريف": record.expenses,
         "تقرير السيستم": systemReport,
         "عد الكاش في الجرار": record.drawerCount,
@@ -171,7 +171,7 @@ export default function CashClosingForm() {
         "Cash In": record.cashIn,
         "Cash": record.cash,
         "Visa": record.visa,
-        "مجموع 1 (Cash + Visa)": total1,
+        "مجموع 1 (Cash In + Cash + Visa)": total1,
         "المصاريف": record.expenses,
         "تقرير السيستم": systemReport,
         "عد الكاش في الجرار": record.drawerCount,
@@ -367,7 +367,7 @@ export default function CashClosingForm() {
               <div className="mt-4 p-3 bg-green-50 rounded border border-green-200">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-600">مجموع 1 (Cash + Visa)</p>
+                    <p className="text-gray-600">مجموع 1 (Cash In + Cash + Visa)</p>
                     <p className="text-lg font-bold text-green-700">
                       {calculations.total1.toFixed(2)}
                     </p>
