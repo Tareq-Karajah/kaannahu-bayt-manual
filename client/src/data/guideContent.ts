@@ -1022,6 +1022,14 @@ export const quickActions = [
     color: "bg-amber-100",
     sectionId: "expiry-tracker",
   },
+  {
+    id: "cash-closing",
+    title: "تسكير الكاش",
+    description: "نموذج تسكير الكاش اليومي مع تصدير Excel",
+    icon: "💰",
+    color: "bg-green-100",
+    sectionId: "cash-closing",
+  },
 ];
 
 // بيانات الصفحة الرئيسية

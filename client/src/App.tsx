@@ -5,12 +5,14 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import ExpiryTrackerPage from "./pages/ExpiryTrackerPage";
+import CashClosingPage from "./pages/CashClosingPage";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/expiry-tracker"} component={ExpiryTrackerPage} />
+      <Route path={"/cash-closing"} component={CashClosingPage} />
       {/* Final fallback route */}
       <Route component={Home} />
     </Switch>

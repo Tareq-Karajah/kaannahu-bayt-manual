@@ -31,8 +31,8 @@ export default function Home() {
   const [, setLocation] = useLocation();
 
   const handleSearchResult = (sectionId: string) => {
-    if (sectionId === "expiry-tracker") {
-      setLocation("/expiry-tracker");
+    if (sectionId === "expiry-tracker" || sectionId === "cash-closing") {
+      setLocation(sectionId === "expiry-tracker" ? "/expiry-tracker" : "/cash-closing");
     } else {
       setActiveSection(sectionId);
       setTimeout(() => {
