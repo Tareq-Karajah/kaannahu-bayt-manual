@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import { useLocation } from "wouter";
-import { useAuth } from "@/_core/hooks/useAuth";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
 import SectionView from "@/components/SectionView";
@@ -9,12 +8,8 @@ import QuickActions from "@/components/QuickActions";
 import TableOfContents from "@/components/TableOfContents";
 import Footer from "@/components/Footer";
 import { guideData, homePageData } from "@/data/guideContent";
-import { getLoginUrl } from "@/const";
 
 export default function Home() {
-  // Authentication state
-  const { user, loading, isAuthenticated } = useAuth();
-
   const [activeSection, setActiveSection] = useState("intro");
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -45,36 +40,6 @@ export default function Home() {
       }, 100);
     }
   };
-
-  // Show loading state while checking authentication
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center" dir="rtl">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">جاري التحميل...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Redirect to login if not authenticated
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center" dir="rtl">
-        <div className="text-center space-y-6">
-          <h1 className="text-3xl font-bold text-foreground">الدليل التشغيلي الموحد</h1>
-          <p className="text-muted-foreground">يرجى تسجيل الدخول للوصول إلى الدليل</p>
-          <a
-            href={getLoginUrl()}
-            className="inline-block bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
-          >
-            تسجيل الدخول
-          </a>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
