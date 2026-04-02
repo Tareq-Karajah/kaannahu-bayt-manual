@@ -6,8 +6,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import ExpiryTrackerPage from "./pages/ExpiryTrackerPage";
 import CashClosingPage from "./pages/CashClosingPage";
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
