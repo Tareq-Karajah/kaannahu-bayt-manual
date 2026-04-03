@@ -24,26 +24,21 @@
 - [x] إنشاء مكون CashClosingFormDB مع تكامل قاعدة البيانات
 
 ## Phase 4: Expiry Tracking System ⏳
-- [ ] ربط نموذج تتبع الصلاحية بقاعدة البيانات
-- [ ] إنشاء tRPC procedures لتتبع الصلاحية
-- [ ] إنشاء جداول في قاعدة البيانات للمنتجات والصلاحيات
+- [ ] إنشاء جداول Drizzle لتتبع الصلاحية (products, expiry_batches)
+- [ ] إضافة helper functions في server/db.ts لعمليات CRUD
+- [ ] إضافة tRPC procedures لتتبع الصلاحية
+- [ ] ربط ExpiryTrackerDB بقاعدة البيانات عبر tRPC
+- [x] إنشاء واجهة إدخال البيانات (ExpiryTrackerDB component)
 
 ## Phase 5: Material Tracking System ⏳
 - [ ] إنشاء جداول قاعدة البيانات:
   - [ ] recipes (الوصفات)
   - [ ] recipe_ingredients (مكونات الوصفات)
-  - [ ] ingredients (المكونات)
   - [ ] sales (المبيعات)
-  - [ ] inventory_input (المدخلات)
-  - [ ] calculated_usage (الاستهلاك المحسوب)
   - [ ] waste_log (سجل الهدر)
-  - [ ] waste_alerts (تنبيهات الهدر)
+- [ ] إضافة helper functions لعمليات CRUD
 - [ ] إنشاء tRPC procedures للمواد والهدر
-- [ ] إنشاء واجهات إدخال البيانات:
-  - [ ] صفحة إدارة الوصفات
-  - [ ] صفحة تسجيل المبيعات
-  - [ ] صفحة تسجيل المدخلات
-  - [ ] صفحة تسجيل الهدر
+- [ ] إنشاء واجهات إدخال البيانات
 
 ## Phase 6: Analytics Dashboard ⏳
 - [ ] إنشاء لوحة معلومات تحليلية:
@@ -60,9 +55,11 @@
 
 ## Known Issues
 - TypeScript LSP warnings في server/routers.ts (لا تؤثر على البناء الفعلي)
+- ExpiryTrackerDB يحتوي على بيانات hardcoded ويحتاج ربط بقاعدة البيانات
 - قد تحتاج إلى تحديث baseline-browser-mapping
 
 ## Notes
 - البناء يعمل بنجاح رغم تحذيرات TypeScript
 - جميع الاختبارات تمر بنجاح
 - قاعدة البيانات جاهزة للاستخدام
+- تم إنشاء مكونات UI جاهزة للربط بقاعدة البيانات
