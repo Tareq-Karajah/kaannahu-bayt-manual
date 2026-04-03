@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, deleteCashClosing, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, saveWasteAlert, getWasteAlerts } from "./db";
+import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, deleteCashClosing, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, updateWasteLog, deleteWasteLog, saveWasteAlert, getWasteAlerts, updateWasteAlert, deleteWasteAlert } from "./db";
 import { InsertCashClosing } from "../drizzle/schema";
 
 export const appRouter = router({
@@ -226,6 +226,44 @@ export const appRouter = router({
           threshold: input.threshold?.toString() || '5',
           wastePercentage: input.wastePercentage.toString(),
         });
+      }),
+    
+    updateWaste: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        quantity: z.string().optional(),
+        reason: z.string().optional(),
+        estimatedCost: z.number().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        return updateWasteLog(id, data);
+      }),
+    
+    deleteWaste: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await deleteWasteLog(input.id);
+        return { success: true };
+      }),
+    
+    updateAlert: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        status: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        return updateWasteAlert(id, data);
+      }),
+    
+    deleteAlert: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await deleteWasteAlert(input.id);
+        return { success: true };
       }),
   }),
 });

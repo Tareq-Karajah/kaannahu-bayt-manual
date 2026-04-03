@@ -357,3 +357,44 @@ export async function deleteCashClosing(id: number): Promise<void> {
 
   await db.delete(cashClosings).where(eq(cashClosings.id, id));
 }
+
+
+export async function updateWasteLog(id: number, data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.update(wasteLogs).set(data).where(eq(wasteLogs.id, id));
+  const updated = await db.select().from(wasteLogs).where(eq(wasteLogs.id, id)).limit(1);
+  return updated[0];
+}
+
+export async function deleteWasteLog(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.delete(wasteLogs).where(eq(wasteLogs.id, id));
+}
+
+export async function updateWasteAlert(id: number, data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.update(wasteAlerts).set(data).where(eq(wasteAlerts.id, id));
+  const updated = await db.select().from(wasteAlerts).where(eq(wasteAlerts.id, id)).limit(1);
+  return updated[0];
+}
+
+export async function deleteWasteAlert(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.delete(wasteAlerts).where(eq(wasteAlerts.id, id));
+}
