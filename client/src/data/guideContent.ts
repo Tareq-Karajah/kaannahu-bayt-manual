@@ -1030,6 +1030,30 @@ export const quickActions = [
     color: "bg-green-100",
     sectionId: "cash-closing",
   },
+  {
+    id: "waste-tracking",
+    title: "تتبع الهدر",
+    description: "تسجيل وتتبع الهدر والمواد التالفة",
+    icon: "🗑️",
+    color: "bg-orange-100",
+    sectionId: "waste-tracking",
+  },
+  {
+    id: "analytics",
+    title: "لوحة المعلومات",
+    description: "إحصائيات وتحليلات شاملة للهدر والمبيعات",
+    icon: "📊",
+    color: "bg-blue-100",
+    sectionId: "analytics",
+  },
+  {
+    id: "waste-alerts",
+    title: "تنبيهات الهدر",
+    description: "نظام التنبيهات الذكي للهدر الزائد",
+    icon: "⚠️",
+    color: "bg-red-100",
+    sectionId: "waste-alerts",
+  },
 ];
 
 // بيانات الصفحة الرئيسية

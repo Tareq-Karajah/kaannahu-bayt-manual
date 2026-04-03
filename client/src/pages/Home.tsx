@@ -31,8 +31,16 @@ export default function Home() {
   const [, setLocation] = useLocation();
 
   const handleSearchResult = (sectionId: string) => {
-    if (sectionId === "expiry-tracker" || sectionId === "cash-closing") {
-      setLocation(sectionId === "expiry-tracker" ? "/expiry-tracker" : "/cash-closing");
+    const routeMap: { [key: string]: string } = {
+      "expiry-tracker": "/expiry-tracker",
+      "cash-closing": "/cash-closing",
+      "waste-tracking": "/waste-tracking",
+      "analytics": "/analytics",
+      "waste-alerts": "/waste-alerts",
+    };
+    
+    if (routeMap[sectionId]) {
+      setLocation(routeMap[sectionId]);
     } else {
       setActiveSection(sectionId);
       setTimeout(() => {

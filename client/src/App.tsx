@@ -6,6 +6,9 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import ExpiryTrackerPage from "./pages/ExpiryTrackerPage";
 import CashClosingPage from "./pages/CashClosingPage";
+import WasteTrackingPage from "./pages/WasteTrackingPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import WasteAlertsPage from "./pages/WasteAlertsPage";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -13,6 +16,9 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/expiry-tracker"} component={ExpiryTrackerPage} />
       <Route path={"/cash-closing"} component={CashClosingPage} />
+      <Route path={"/waste-tracking"} component={WasteTrackingPage} />
+      <Route path={"/analytics"} component={AnalyticsPage} />
+      <Route path={"/waste-alerts"} component={WasteAlertsPage} />
       {/* Final fallback route */}
       <Route component={Home} />
     </Switch>
