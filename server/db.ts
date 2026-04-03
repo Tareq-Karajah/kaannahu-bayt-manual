@@ -347,3 +347,13 @@ export async function getWasteAlerts(userId: number, status?: string): Promise<a
   
   return query.orderBy(desc(wasteAlerts.alertDate));
 }
+
+
+export async function deleteCashClosing(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.delete(cashClosings).where(eq(cashClosings.id, id));
+}

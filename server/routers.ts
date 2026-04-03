@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, saveWasteAlert, getWasteAlerts } from "./db";
+import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, deleteCashClosing, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, saveWasteAlert, getWasteAlerts } from "./db";
 import { InsertCashClosing } from "../drizzle/schema";
 
 export const appRouter = router({
@@ -98,6 +98,13 @@ export const appRouter = router({
       .input(z.object({ limit: z.number().optional() }))
       .query(async ({ input }) => {
         return getCashClosingHistory(1, input.limit || 30);
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await deleteCashClosing(input.id);
+        return { success: true };
       }),
   }),
 

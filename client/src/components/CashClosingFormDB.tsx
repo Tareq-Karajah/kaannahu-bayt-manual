@@ -217,8 +217,20 @@ export default function CashClosingFormDB() {
     });
   };
 
+  // Delete mutation
+  const deleteMutation = trpc.cashClosing.delete.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      alert(`خطأ في حذف البيانات: ${error.message}`);
+    },
+  });
+
   const handleDeleteRecord = (id: string) => {
-    setRecords(records.filter((record) => record.id !== id));
+    if (confirm("هل أنت متأكد من حذف هذا السجل؟")) {
+      deleteMutation.mutate({ id: parseInt(id) });
+    }
   };
 
   const exportToExcel = (record: CashClosingRecord) => {
