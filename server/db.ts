@@ -1,6 +1,6 @@
 import { eq, desc, and, gte, lte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, cashClosings, dailyStatistics, InsertCashClosing, CashClosing, DailyStatistics } from "../drizzle/schema";
+import { InsertUser, users, cashClosings, dailyStatistics, InsertCashClosing, CashClosing, DailyStatistics, products, recipes, sales, wasteLogs, wasteAlerts } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -178,4 +178,172 @@ export async function getDailyStatistics(startDate: Date, endDate: Date): Promis
   const endStr = endDate.toISOString().split('T')[0];
   
   return db.select().from(dailyStatistics).where(and(gte(dailyStatistics.statisticsDate, startStr as any), lte(dailyStatistics.statisticsDate, endStr as any))).orderBy(desc(dailyStatistics.statisticsDate));
+}
+
+// Product Functions
+export async function saveProduct(data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(products).values(data);
+  const id = result[0].insertId;
+  
+  const saved = await db.select().from(products).where(eq(products.id, Number(id))).limit(1);
+  return saved[0];
+}
+
+export async function getProducts(userId: number): Promise<any[]> {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+
+  return db.select().from(products).where(eq(products.userId, userId)).orderBy(desc(products.expiryDate));
+}
+
+export async function updateProduct(id: number, data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.update(products).set(data).where(eq(products.id, id));
+  const updated = await db.select().from(products).where(eq(products.id, id)).limit(1);
+  return updated[0];
+}
+
+export async function deleteProduct(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.delete(products).where(eq(products.id, id));
+}
+
+// Recipe Functions
+export async function saveRecipe(data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(recipes).values(data);
+  const id = result[0].insertId;
+  
+  const saved = await db.select().from(recipes).where(eq(recipes.id, Number(id))).limit(1);
+  return saved[0];
+}
+
+export async function getRecipes(userId: number): Promise<any[]> {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+
+  return db.select().from(recipes).where(eq(recipes.userId, userId)).orderBy(desc(recipes.createdAt));
+}
+
+// Sales Functions
+export async function saveSale(data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(sales).values(data);
+  const id = result[0].insertId;
+  
+  const saved = await db.select().from(sales).where(eq(sales.id, Number(id))).limit(1);
+  return saved[0];
+}
+
+export async function getSales(userId: number, startDate?: Date, endDate?: Date): Promise<any[]> {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+
+  let query = db.select().from(sales).where(eq(sales.userId, userId));
+  
+  if (startDate && endDate) {
+    const startStr = startDate.toISOString().split('T')[0];
+    const endStr = endDate.toISOString().split('T')[0];
+    query = db.select().from(sales).where(and(
+      eq(sales.userId, userId),
+      gte(sales.saleDate, startStr as any),
+      lte(sales.saleDate, endStr as any)
+    ));
+  }
+  
+  return query.orderBy(desc(sales.saleDate));
+}
+
+// Waste Log Functions
+export async function saveWasteLog(data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(wasteLogs).values(data);
+  const id = result[0].insertId;
+  
+  const saved = await db.select().from(wasteLogs).where(eq(wasteLogs.id, Number(id))).limit(1);
+  return saved[0];
+}
+
+export async function getWasteLogs(userId: number, startDate?: Date, endDate?: Date): Promise<any[]> {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+
+  let query = db.select().from(wasteLogs).where(eq(wasteLogs.userId, userId));
+  
+  if (startDate && endDate) {
+    const startStr = startDate.toISOString().split('T')[0];
+    const endStr = endDate.toISOString().split('T')[0];
+    query = db.select().from(wasteLogs).where(and(
+      eq(wasteLogs.userId, userId),
+      gte(wasteLogs.wasteDate, startStr as any),
+      lte(wasteLogs.wasteDate, endStr as any)
+    ));
+  }
+  
+  return query.orderBy(desc(wasteLogs.wasteDate));
+}
+
+// Waste Alert Functions
+export async function saveWasteAlert(data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(wasteAlerts).values(data);
+  const id = result[0].insertId;
+  
+  const saved = await db.select().from(wasteAlerts).where(eq(wasteAlerts.id, Number(id))).limit(1);
+  return saved[0];
+}
+
+export async function getWasteAlerts(userId: number, status?: string): Promise<any[]> {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+
+  let query = db.select().from(wasteAlerts).where(eq(wasteAlerts.userId, userId));
+  
+  if (status) {
+    query = db.select().from(wasteAlerts).where(and(
+      eq(wasteAlerts.userId, userId),
+      eq(wasteAlerts.status, status as any)
+    ));
+  }
+  
+  return query.orderBy(desc(wasteAlerts.alertDate));
 }

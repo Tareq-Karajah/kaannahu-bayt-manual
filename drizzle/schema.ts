@@ -102,3 +102,102 @@ export const dailyStatistics = mysqlTable("daily_statistics", {
 
 export type DailyStatistics = typeof dailyStatistics.$inferSelect;
 export type InsertDailyStatistics = typeof dailyStatistics.$inferInsert;
+
+// Products Table
+export const products = mysqlTable("products", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(),
+  quantity: decimal("quantity", { precision: 10, scale: 2 }).default("0").notNull(),
+  unit: varchar("unit", { length: 50 }).notNull(),
+  expiryDate: date("expiry_date").notNull(),
+  storageLocation: varchar("storage_location", { length: 255 }),
+  notes: text("notes"),
+  status: mysqlEnum("status", ["healthy", "warning", "urgent", "expired"]).default("healthy").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Product = typeof products.$inferSelect;
+export type InsertProduct = typeof products.$inferInsert;
+
+// Recipes Table
+export const recipes = mysqlTable("recipes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  yield: decimal("yield", { precision: 10, scale: 2 }).default("1").notNull(),
+  yieldUnit: varchar("yield_unit", { length: 50 }).notNull(),
+  costPerUnit: decimal("cost_per_unit", { precision: 10, scale: 2 }).default("0"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Recipe = typeof recipes.$inferSelect;
+export type InsertRecipe = typeof recipes.$inferInsert;
+
+// Recipe Ingredients Table
+export const recipeIngredients = mysqlTable("recipe_ingredients", {
+  id: int("id").autoincrement().primaryKey(),
+  recipeId: int("recipe_id").notNull(),
+  productId: int("product_id").notNull(),
+  quantity: decimal("quantity", { precision: 10, scale: 2 }).notNull(),
+  unit: varchar("unit", { length: 50 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type RecipeIngredient = typeof recipeIngredients.$inferSelect;
+export type InsertRecipeIngredient = typeof recipeIngredients.$inferInsert;
+
+// Sales Table
+export const sales = mysqlTable("sales", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  recipeId: int("recipe_id").notNull(),
+  quantity: decimal("quantity", { precision: 10, scale: 2 }).notNull(),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  totalAmount: decimal("total_amount", { precision: 12, scale: 2 }).notNull(),
+  saleDate: date("sale_date").notNull(),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Sale = typeof sales.$inferSelect;
+export type InsertSale = typeof sales.$inferInsert;
+
+// Waste Log Table
+export const wasteLogs = mysqlTable("waste_logs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  productId: int("product_id").notNull(),
+  quantity: decimal("quantity", { precision: 10, scale: 2 }).notNull(),
+  unit: varchar("unit", { length: 50 }).notNull(),
+  reason: varchar("reason", { length: 255 }).notNull(),
+  estimatedCost: decimal("estimated_cost", { precision: 10, scale: 2 }).default("0"),
+  wasteDate: date("waste_date").notNull(),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type WasteLog = typeof wasteLogs.$inferSelect;
+export type InsertWasteLog = typeof wasteLogs.$inferInsert;
+
+// Waste Alerts Table
+export const wasteAlerts = mysqlTable("waste_alerts", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  productId: int("product_id").notNull(),
+  wastePercentage: decimal("waste_percentage", { precision: 5, scale: 2 }).notNull(),
+  threshold: decimal("threshold", { precision: 5, scale: 2 }).default("5").notNull(),
+  status: mysqlEnum("status", ["active", "acknowledged", "resolved"]).default("active").notNull(),
+  alertDate: date("alert_date").notNull(),
+  acknowledgedAt: timestamp("acknowledged_at"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type WasteAlert = typeof wasteAlerts.$inferSelect;
+export type InsertWasteAlert = typeof wasteAlerts.$inferInsert;

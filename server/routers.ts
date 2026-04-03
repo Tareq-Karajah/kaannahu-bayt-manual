@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, updateDailyStatistics, getDailyStatistics } from "./db";
+import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, saveWasteAlert, getWasteAlerts } from "./db";
 import { InsertCashClosing } from "../drizzle/schema";
 
 export const appRouter = router({
@@ -116,6 +116,109 @@ export const appRouter = router({
         const startDate = new Date(input.startDate);
         const endDate = new Date(input.endDate);
         return getDailyStatistics(startDate, endDate);
+      }),
+  }),
+
+  // Products Router
+  products: router({
+    save: publicProcedure
+      .input(z.object({
+        name: z.string(),
+        category: z.string(),
+        quantity: z.number(),
+        unit: z.string(),
+        expiryDate: z.string(),
+        storageLocation: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        return saveProduct({
+          userId: ctx.user?.id || 1,
+          ...input,
+          expiryDate: input.expiryDate as any,
+          status: 'healthy',
+        });
+      }),
+    
+    getAll: publicProcedure
+      .query(async ({ ctx }) => {
+        return getProducts(ctx.user?.id || 1);
+      }),
+    
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        quantity: z.number().optional(),
+        status: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return updateProduct(input.id, input);
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await deleteProduct(input.id);
+        return { success: true };
+      }),
+  }),
+
+  // Waste Router
+  waste: router({
+    logWaste: publicProcedure
+      .input(z.object({
+        productId: z.number(),
+        quantity: z.number(),
+        unit: z.string(),
+        reason: z.string(),
+        estimatedCost: z.number().optional(),
+        wasteDate: z.string(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        return saveWasteLog({
+          userId: ctx.user?.id || 1,
+          ...input,
+          wasteDate: input.wasteDate as any,
+          estimatedCost: input.estimatedCost?.toString(),
+        });
+      }),
+    
+    getWasteLogs: publicProcedure
+      .input(z.object({
+        startDate: z.string().optional(),
+        endDate: z.string().optional(),
+      }))
+      .query(async ({ input, ctx }) => {
+        const startDate = input.startDate ? new Date(input.startDate) : undefined;
+        const endDate = input.endDate ? new Date(input.endDate) : undefined;
+        return getWasteLogs(ctx.user?.id || 1, startDate, endDate);
+      }),
+    
+    getAlerts: publicProcedure
+      .input(z.object({ status: z.string().optional() }))
+      .query(async ({ input, ctx }) => {
+        return getWasteAlerts(ctx.user?.id || 1, input.status);
+      }),
+    
+    createAlert: publicProcedure
+      .input(z.object({
+        productId: z.number(),
+        wastePercentage: z.number(),
+        threshold: z.number().optional(),
+        alertDate: z.string(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        return saveWasteAlert({
+          userId: ctx.user?.id || 1,
+          ...input,
+          alertDate: input.alertDate as any,
+          status: 'active',
+          threshold: input.threshold?.toString() || '5',
+          wastePercentage: input.wastePercentage.toString(),
+        });
       }),
   }),
 });

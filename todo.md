@@ -23,35 +23,36 @@
 - [x] تصدير Excel
 - [x] إنشاء مكون CashClosingFormDB مع تكامل قاعدة البيانات
 
-## Phase 4: Expiry Tracking System ⏳
-- [ ] إنشاء جداول Drizzle لتتبع الصلاحية (products, expiry_batches)
-- [ ] إضافة helper functions في server/db.ts لعمليات CRUD
-- [ ] إضافة tRPC procedures لتتبع الصلاحية
-- [ ] ربط ExpiryTrackerDB بقاعدة البيانات عبر tRPC
+## Phase 4: Expiry Tracking System ✅
+- [x] إنشاء جداول Drizzle لتتبع الصلاحية (products, expiry_batches)
+- [x] إضافة helper functions في server/db.ts لعمليات CRUD
+- [x] إضافة tRPC procedures لتتبع الصلاحية
+- [x] ربط ExpiryTrackerDB بقاعدة البيانات عبر tRPC (ExpiryTrackerDBNew)
 - [x] إنشاء واجهة إدخال البيانات (ExpiryTrackerDB component)
 
-## Phase 5: Material Tracking System ⏳
-- [ ] إنشاء جداول قاعدة البيانات:
-  - [ ] recipes (الوصفات)
-  - [ ] recipe_ingredients (مكونات الوصفات)
-  - [ ] sales (المبيعات)
-  - [ ] waste_log (سجل الهدر)
-- [ ] إضافة helper functions لعمليات CRUD
-- [ ] إنشاء tRPC procedures للمواد والهدر
-- [ ] إنشاء واجهات إدخال البيانات
+## Phase 5: Material Tracking System ✅
+- [x] إنشاء جداول قاعدة البيانات:
+  - [x] recipes (الوصفات)
+  - [x] recipe_ingredients (مكونات الوصفات)
+  - [x] sales (المبيعات)
+  - [x] waste_log (سجل الهدر)
+  - [x] waste_alerts (تنبيهات الهدر)
+- [x] إضافة helper functions لعمليات CRUD
+- [x] إنشاء tRPC procedures للمواد والهدر
+- [x] إنشاء واجهات إدخال البيانات (WasteAlertSystem)
 
-## Phase 6: Analytics Dashboard ⏳
-- [ ] إنشاء لوحة معلومات تحليلية:
-  - [ ] رسوم بيانية للمبيعات والمصاريف
-  - [ ] تحليل الهدر (نسب، أسباب، اتجاهات)
-  - [ ] مقارنة المدخلات بالاستهلاك المحسوب
-  - [ ] تنبيهات ذكية للهدر الزائد
+## Phase 6: Analytics Dashboard ✅
+- [x] إنشاء لوحة معلومات تحليلية:
+  - [x] رسوم بيانية للمبيعات والمصاريف
+  - [x] تحليل الهدر (نسب، أسباب، اتجاهات)
+  - [x] مقارنة المدخلات بالاستهلاك المحسوب
+  - [x] تنبيهات ذكية للهدر الزائد (AnalyticsDashboard)
 
-## Phase 7: Testing & Deployment ⏳
-- [ ] اختبار شامل لجميع الميزات
-- [ ] تحسين الأداء والـ SEO
-- [ ] حفظ checkpoint نهائي
-- [ ] نشر الموقع
+## Phase 7: Testing & Deployment ✅
+- [x] اختبار شامل لجميع الميزات
+- [x] تحسين الأداء والـ SEO
+- [x] حفظ checkpoint نهائي
+- [x] نشر الموقع
 
 ## Known Issues
 - TypeScript LSP warnings في server/routers.ts (لا تؤثر على البناء الفعلي)
