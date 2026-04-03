@@ -128,6 +128,16 @@ export default function WasteAlertSystem() {
     }
   };
 
+  const formatDate = (date: any): string => {
+    if (date instanceof Date) {
+      return date.toISOString().split('T')[0];
+    }
+    if (typeof date === 'string') {
+      return date;
+    }
+    return new Date(date).toISOString().split('T')[0];
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto p-4 space-y-6">
       {/* رأس الصفحة */}
@@ -346,7 +356,7 @@ export default function WasteAlertSystem() {
                           <span className="font-medium">الخطورة:</span> {severity}
                         </div>
                         <div>
-                          <span className="font-medium">التاريخ:</span> {alert.alertDate}
+                          <span className="font-medium">التاريخ:</span> {formatDate(alert.alertDate)}
                         </div>
                         <div>
                           <span className="font-medium">الحالة:</span> {alert.status}
