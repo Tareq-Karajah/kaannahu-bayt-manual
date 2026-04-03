@@ -99,3 +99,18 @@
   - تم إضافة أيقونات ووصفات للأربع عناصر البحثالسريع
 - [x] إنشاء صفحات منفصلة لكل مكون
 - [x] إضافة أيقونات وتصنيفات واضحة للملاحات
+
+
+## Advanced Waste Calculation System ✅
+- [x] تحديث قاعدة البيانات بجداول جديدة:
+  - [x] daily_quantities (الكميات اليومية المسحوبة)
+  - [x] dishes (الأطباق المعروضة)
+  - [x] dish_ingredients (مكونات الأطباق)
+  - [x] sales_items (تفاصيل المبيعات بالأطباق)
+  - [x] waste_calculations (حسابات الهدر المتقدمة)
+- [x] إنشاء 30+ helper functions لحساب الهدر
+- [x] إنشاء 4 routers tRPC مع 20+ procedures
+- [x] إنشاء DailyQuantitiesForm لإدخال الكميات اليومية
+- [x] إنشاء SalesForm لتسجيل المبيعات مع الأطباق
+- [x] إنشاء AdvancedWasteCalculator لحساب الهدر المتقدم
+- [x] إضافة 3 صفحات جديدة وربطها بالمسارات

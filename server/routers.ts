@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, deleteCashClosing, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, updateWasteLog, deleteWasteLog, saveWasteAlert, getWasteAlerts, updateWasteAlert, deleteWasteAlert } from "./db";
+import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, deleteCashClosing, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, updateWasteLog, deleteWasteLog, saveWasteAlert, getWasteAlerts, updateWasteAlert, deleteWasteAlert, saveDailyQuantity, getDailyQuantities, updateDailyQuantity, deleteDailyQuantity, saveDish, getDishes, updateDish, deleteDish, saveDishIngredient, getDishIngredients, deleteDishIngredient, saveSalesItem, getSalesItems, getSalesItemsRange, deleteSalesItem, saveWasteCalculation, getWasteCalculations, getWasteCalculationsRange, calculateDailyWaste } from "./db";
 import { InsertCashClosing } from "../drizzle/schema";
 
 export const appRouter = router({
@@ -264,6 +264,164 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         await deleteWasteAlert(input.id);
         return { success: true };
+      }),
+  }),
+  
+  // Daily Quantities Router
+  quantities: router({
+    save: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        productId: z.number(),
+        quantityDate: z.date(),
+        quantityWithdrawn: z.string(),
+        unit: z.string(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return saveDailyQuantity(input as any);
+      }),
+    
+    getByDate: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        date: z.date(),
+      }))
+      .query(async ({ input }) => {
+        return getDailyQuantities(input.userId, input.date);
+      }),
+    
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        quantityWithdrawn: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        return updateDailyQuantity(id, data as any);
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await deleteDailyQuantity(input.id);
+        return { success: true };
+      }),
+  }),
+  
+  // Dishes Router
+  dishes: router({
+    save: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        name: z.string(),
+        description: z.string().optional(),
+        price: z.string(),
+        category: z.string(),
+        isActive: z.boolean().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return saveDish(input as any);
+      }),
+    
+    getAll: publicProcedure
+      .input(z.object({ userId: z.number() }))
+      .query(async ({ input }) => {
+        return getDishes(input.userId);
+      }),
+    
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        price: z.string().optional(),
+        isActive: z.boolean().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        return updateDish(id, data as any);
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await deleteDish(input.id);
+        return { success: true };
+      }),
+  }),
+  
+  // Sales Items Router
+  salesItems: router({
+    save: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        dishId: z.number(),
+        quantity: z.number(),
+        saleDate: z.date(),
+        totalPrice: z.string(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return saveSalesItem(input as any);
+      }),
+    
+    getByDate: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        date: z.date(),
+      }))
+      .query(async ({ input }) => {
+        return getSalesItems(input.userId, input.date);
+      }),
+    
+    getRange: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        startDate: z.date(),
+        endDate: z.date(),
+      }))
+      .query(async ({ input }) => {
+        return getSalesItemsRange(input.userId, input.startDate, input.endDate);
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await deleteSalesItem(input.id);
+        return { success: true };
+      }),
+  }),
+  
+  // Waste Calculations Router
+  wasteCalc: router({
+    calculate: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        productId: z.number(),
+        date: z.date(),
+      }))
+      .mutation(async ({ input }) => {
+        return calculateDailyWaste(input.userId, input.productId, input.date);
+      }),
+    
+    getByDate: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        date: z.date(),
+      }))
+      .query(async ({ input }) => {
+        return getWasteCalculations(input.userId, input.date);
+      }),
+    
+    getRange: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        startDate: z.date(),
+        endDate: z.date(),
+      }))
+      .query(async ({ input }) => {
+        return getWasteCalculationsRange(input.userId, input.startDate, input.endDate);
       }),
   }),
 });

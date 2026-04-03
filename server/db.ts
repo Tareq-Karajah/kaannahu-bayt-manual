@@ -1,6 +1,6 @@
 import { eq, desc, and, gte, lte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, cashClosings, dailyStatistics, InsertCashClosing, CashClosing, DailyStatistics, products, recipes, sales, wasteLogs, wasteAlerts } from "../drizzle/schema";
+import { InsertUser, users, cashClosings, dailyStatistics, InsertCashClosing, CashClosing, DailyStatistics, products, recipes, sales, wasteLogs, wasteAlerts, dailyQuantities, dishes, dishIngredients, salesItems, wasteCalculations, InsertDailyQuantity, DailyQuantity, InsertDish, Dish, InsertDishIngredient, DishIngredient, InsertSalesItem, SalesItem, InsertWasteCalculation, WasteCalculation } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -397,4 +397,235 @@ export async function deleteWasteAlert(id: number): Promise<void> {
   }
 
   await db.delete(wasteAlerts).where(eq(wasteAlerts.id, id));
+}
+
+
+// Daily Quantities Functions
+export async function saveDailyQuantity(data: InsertDailyQuantity): Promise<DailyQuantity> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(dailyQuantities).values(data);
+  const id = result[0].insertId as number;
+  const saved = await db.select().from(dailyQuantities).where(eq(dailyQuantities.id, id));
+  return saved[0];
+}
+
+export async function getDailyQuantities(userId: number, date: Date): Promise<DailyQuantity[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const dateStr = date.toISOString().split('T')[0];
+  return await db.select().from(dailyQuantities)
+    .where(and(eq(dailyQuantities.userId, userId), eq(dailyQuantities.quantityDate, dateStr as any)));
+}
+
+export async function updateDailyQuantity(id: number, data: Partial<DailyQuantity>): Promise<DailyQuantity> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(dailyQuantities).set(data).where(eq(dailyQuantities.id, id));
+  const updated = await db.select().from(dailyQuantities).where(eq(dailyQuantities.id, id));
+  return updated[0];
+}
+
+export async function deleteDailyQuantity(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(dailyQuantities).where(eq(dailyQuantities.id, id));
+}
+
+// Dishes Functions
+export async function saveDish(data: InsertDish): Promise<Dish> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(dishes).values(data);
+  const id = result[0].insertId as number;
+  const saved = await db.select().from(dishes).where(eq(dishes.id, id));
+  return saved[0];
+}
+
+export async function getDishes(userId: number): Promise<Dish[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(dishes).where(eq(dishes.userId, userId));
+}
+
+export async function updateDish(id: number, data: Partial<Dish>): Promise<Dish> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(dishes).set(data).where(eq(dishes.id, id));
+  const updated = await db.select().from(dishes).where(eq(dishes.id, id));
+  return updated[0];
+}
+
+export async function deleteDish(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(dishes).where(eq(dishes.id, id));
+}
+
+// Dish Ingredients Functions
+export async function saveDishIngredient(data: InsertDishIngredient): Promise<DishIngredient> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(dishIngredients).values(data);
+  const id = result[0].insertId as number;
+  const saved = await db.select().from(dishIngredients).where(eq(dishIngredients.id, id));
+  return saved[0];
+}
+
+export async function getDishIngredients(dishId: number): Promise<DishIngredient[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  return await db.select().from(dishIngredients).where(eq(dishIngredients.dishId, dishId));
+}
+
+export async function deleteDishIngredient(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(dishIngredients).where(eq(dishIngredients.id, id));
+}
+
+// Sales Items Functions
+export async function saveSalesItem(data: InsertSalesItem): Promise<SalesItem> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(salesItems).values(data);
+  const id = result[0].insertId as number;
+  const saved = await db.select().from(salesItems).where(eq(salesItems.id, id));
+  return saved[0];
+}
+
+export async function getSalesItems(userId: number, date: Date): Promise<SalesItem[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const dateStr = date.toISOString().split('T')[0];
+  return await db.select().from(salesItems)
+    .where(and(eq(salesItems.userId, userId), eq(salesItems.saleDate, dateStr as any)));
+}
+
+export async function getSalesItemsRange(userId: number, startDate: Date, endDate: Date): Promise<SalesItem[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const start = startDate.toISOString().split('T')[0];
+  const end = endDate.toISOString().split('T')[0];
+  return await db.select().from(salesItems)
+    .where(and(
+      eq(salesItems.userId, userId),
+      gte(salesItems.saleDate, start as any),
+      lte(salesItems.saleDate, end as any)
+    ));
+}
+
+export async function deleteSalesItem(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(salesItems).where(eq(salesItems.id, id));
+}
+
+// Waste Calculations Functions
+export async function saveWasteCalculation(data: InsertWasteCalculation): Promise<WasteCalculation> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(wasteCalculations).values(data);
+  const id = result[0].insertId as number;
+  const saved = await db.select().from(wasteCalculations).where(eq(wasteCalculations.id, id));
+  return saved[0];
+}
+
+export async function getWasteCalculations(userId: number, date: Date): Promise<WasteCalculation[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const dateStr = date.toISOString().split('T')[0];
+  return await db.select().from(wasteCalculations)
+    .where(and(eq(wasteCalculations.userId, userId), eq(wasteCalculations.calculationDate, dateStr as any)));
+}
+
+export async function getWasteCalculationsRange(userId: number, startDate: Date, endDate: Date): Promise<WasteCalculation[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const start = startDate.toISOString().split('T')[0];
+  const end = endDate.toISOString().split('T')[0];
+  return await db.select().from(wasteCalculations)
+    .where(and(
+      eq(wasteCalculations.userId, userId),
+      gte(wasteCalculations.calculationDate, start as any),
+      lte(wasteCalculations.calculationDate, end as any)
+    ))
+    .orderBy(desc(wasteCalculations.calculationDate));
+}
+
+// Advanced Waste Calculation Logic
+export async function calculateDailyWaste(userId: number, productId: number, date: Date): Promise<WasteCalculation | null> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const dateStr = date.toISOString().split('T')[0];
+  
+  // Get daily quantity withdrawn
+  const dailyQty = await db.select().from(dailyQuantities)
+    .where(and(
+      eq(dailyQuantities.userId, userId),
+      eq(dailyQuantities.productId, productId),
+      eq(dailyQuantities.quantityDate, dateStr as any)
+    ));
+  
+  if (!dailyQty.length) return null;
+  
+  const quantityWithdrawn = parseFloat(dailyQty[0].quantityWithdrawn.toString());
+  
+  // Get all sales for this date and calculate consumed quantity
+  const sales = await db.select().from(salesItems)
+    .where(and(
+      eq(salesItems.userId, userId),
+      eq(salesItems.saleDate, dateStr as any)
+    ));
+  
+  let quantityConsumed = 0;
+  
+  // For each sale, get the dish ingredients to calculate consumption
+  for (const sale of sales) {
+    const ingredients = await db.select().from(dishIngredients)
+      .where(eq(dishIngredients.dishId, sale.dishId));
+    
+    for (const ing of ingredients) {
+      if (ing.productId === productId) {
+        quantityConsumed += parseFloat(ing.quantityPerServing.toString()) * sale.quantity;
+      }
+    }
+  }
+  
+  const wasteQuantity = quantityWithdrawn - quantityConsumed;
+  const wastePercentage = quantityWithdrawn > 0 ? (wasteQuantity / quantityWithdrawn) * 100 : 0;
+  
+  // Get product cost for estimation
+  const product = await db.select().from(products).where(eq(products.id, productId));
+  const estimatedCost = product.length > 0 ? wasteQuantity * parseFloat(product[0].quantity.toString()) : 0;
+  
+  return await saveWasteCalculation({
+    userId,
+    productId,
+    calculationDate: dateStr as any,
+    quantityWithdrawn: quantityWithdrawn.toString() as any,
+    quantityConsumed: quantityConsumed.toString() as any,
+    wasteQuantity: wasteQuantity.toString() as any,
+    wastePercentage: wastePercentage.toString() as any,
+    estimatedCost: estimatedCost.toString() as any,
+  });
 }

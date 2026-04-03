@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, decimal, date } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, decimal, date, boolean } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -201,3 +201,82 @@ export const wasteAlerts = mysqlTable("waste_alerts", {
 
 export type WasteAlert = typeof wasteAlerts.$inferSelect;
 export type InsertWasteAlert = typeof wasteAlerts.$inferInsert;
+
+// Daily Quantities Table - Track daily material withdrawals
+export const dailyQuantities = mysqlTable("daily_quantities", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  productId: int("product_id").notNull(),
+  quantityDate: date("quantity_date").notNull(),
+  quantityWithdrawn: decimal("quantity_withdrawn", { precision: 10, scale: 2 }).notNull(),
+  unit: varchar("unit", { length: 50 }).notNull(),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type DailyQuantity = typeof dailyQuantities.$inferSelect;
+export type InsertDailyQuantity = typeof dailyQuantities.$inferInsert;
+
+// Dishes Table - Menu items/dishes
+export const dishes = mysqlTable("dishes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Dish = typeof dishes.$inferSelect;
+export type InsertDish = typeof dishes.$inferInsert;
+
+// Dish Ingredients Table - Ingredients for each dish
+export const dishIngredients = mysqlTable("dish_ingredients", {
+  id: int("id").autoincrement().primaryKey(),
+  dishId: int("dish_id").notNull(),
+  productId: int("product_id").notNull(),
+  quantityPerServing: decimal("quantity_per_serving", { precision: 10, scale: 2 }).notNull(),
+  unit: varchar("unit", { length: 50 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type DishIngredient = typeof dishIngredients.$inferSelect;
+export type InsertDishIngredient = typeof dishIngredients.$inferInsert;
+
+// Sales Items Table - Track sold dishes with ingredients consumed
+export const salesItems = mysqlTable("sales_items", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  dishId: int("dish_id").notNull(),
+  quantity: int("quantity").notNull(),
+  saleDate: date("sale_date").notNull(),
+  saleTime: timestamp("sale_time").defaultNow().notNull(),
+  totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type SalesItem = typeof salesItems.$inferSelect;
+export type InsertSalesItem = typeof salesItems.$inferInsert;
+
+// Waste Calculation Log - Calculated waste based on daily quantities vs consumed
+export const wasteCalculations = mysqlTable("waste_calculations", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  productId: int("product_id").notNull(),
+  calculationDate: date("calculation_date").notNull(),
+  quantityWithdrawn: decimal("quantity_withdrawn", { precision: 10, scale: 2 }).notNull(),
+  quantityConsumed: decimal("quantity_consumed", { precision: 10, scale: 2 }).notNull(),
+  wasteQuantity: decimal("waste_quantity", { precision: 10, scale: 2 }).notNull(),
+  wastePercentage: decimal("waste_percentage", { precision: 5, scale: 2 }).notNull(),
+  estimatedCost: decimal("estimated_cost", { precision: 10, scale: 2 }).default("0"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type WasteCalculation = typeof wasteCalculations.$inferSelect;
+export type InsertWasteCalculation = typeof wasteCalculations.$inferInsert;

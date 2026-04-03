@@ -9,6 +9,9 @@ import CashClosingPage from "./pages/CashClosingPage";
 import WasteTrackingPage from "./pages/WasteTrackingPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import WasteAlertsPage from "./pages/WasteAlertsPage";
+import DailyQuantitiesPage from "./pages/DailyQuantitiesPage";
+import SalesPage from "./pages/SalesPage";
+import WasteCalculatorPage from "./pages/WasteCalculatorPage";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -19,6 +22,9 @@ function Router() {
       <Route path={"/waste-tracking"} component={WasteTrackingPage} />
       <Route path={"/analytics"} component={AnalyticsPage} />
       <Route path={"/waste-alerts"} component={WasteAlertsPage} />
+      <Route path={"/daily-quantities"} component={DailyQuantitiesPage} />
+      <Route path={"/sales"} component={SalesPage} />
+      <Route path={"/waste-calculator"} component={WasteCalculatorPage} />
       {/* Final fallback route */}
       <Route component={Home} />
     </Switch>
