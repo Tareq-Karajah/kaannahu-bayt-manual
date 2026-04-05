@@ -73,7 +73,7 @@ export default function WasteLoggingForm() {
 
     await createLogMutation.mutateAsync({
       productId: formData.productId,
-      quantity: formData.quantity.toString(),
+      quantity: formData.quantity,
       reason: formData.reason,
       estimatedCost: formData.estimatedCost,
       wasteDate: formData.wasteDate,
