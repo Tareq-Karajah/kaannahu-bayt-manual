@@ -1,4 +1,4 @@
-import { eq, desc, and, gte, lte } from "drizzle-orm";
+import { eq, desc, and, gte, lte, inArray } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, cashClosings, dailyStatistics, InsertCashClosing, CashClosing, DailyStatistics, products, recipes, sales, wasteLogs, wasteAlerts, dailyQuantities, dishes, dishIngredients, salesItems, wasteCalculations, InsertDailyQuantity, DailyQuantity, InsertDish, Dish, InsertDishIngredient, DishIngredient, InsertSalesItem, SalesItem, InsertWasteCalculation, WasteCalculation } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -598,16 +598,27 @@ export async function calculateDailyWaste(userId: number, productId: number, dat
     ));
   
   let quantityConsumed = 0;
-  
-  // For each sale, get the dish ingredients to calculate consumption
-  for (const sale of sales) {
+
+  const uniqueDishIds = Array.from(new Set(sales.map((sale) => sale.dishId)));
+  if (uniqueDishIds.length > 0) {
     const ingredients = await db.select().from(dishIngredients)
-      .where(eq(dishIngredients.dishId, sale.dishId));
-    
-    for (const ing of ingredients) {
-      if (ing.productId === productId) {
-        quantityConsumed += parseFloat(ing.quantityPerServing.toString()) * sale.quantity;
-      }
+      .where(and(
+        eq(dishIngredients.productId, productId),
+        inArray(dishIngredients.dishId, uniqueDishIds)
+      ));
+
+    const quantityPerServingByDish = new Map<number, number>();
+    for (const ingredient of ingredients) {
+      const existing = quantityPerServingByDish.get(ingredient.dishId) ?? 0;
+      quantityPerServingByDish.set(
+        ingredient.dishId,
+        existing + parseFloat(ingredient.quantityPerServing.toString())
+      );
+    }
+
+    for (const sale of sales) {
+      const perServing = quantityPerServingByDish.get(sale.dishId) ?? 0;
+      quantityConsumed += perServing * sale.quantity;
     }
   }
   
