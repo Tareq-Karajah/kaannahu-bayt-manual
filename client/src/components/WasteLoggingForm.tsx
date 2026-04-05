@@ -88,7 +88,7 @@ export default function WasteLoggingForm() {
   };
 
   const getProductName = (productId: number) => {
-    return products.find(p => p.id === productId)?.name || "منتج غير معروف";
+    return products.find((p) => Number(p.id) === Number(productId))?.name || "منتج غير معروف";
   };
 
   const getReasonColor = (reason: string) => {
