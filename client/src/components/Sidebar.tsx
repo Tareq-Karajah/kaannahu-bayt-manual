@@ -17,7 +17,7 @@ export default function Sidebar({ activeSection, onSectionClick }: SidebarProps)
 
   const sidebarContent = (
     <nav className="space-y-1 p-4">
-      {guideData.map((section) => (
+      {[...guideData].sort((a, b) => a.order - b.order).map((section) => (
         <button
           key={section.id}
           onClick={() => handleSectionClick(section.id)}

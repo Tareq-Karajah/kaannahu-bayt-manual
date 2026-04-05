@@ -13,7 +13,7 @@ export default function TableOfContents({
     <div className="bg-card border border-border rounded-lg p-6">
       <h2 className="text-2xl font-bold text-primary mb-4">فهرس المحتويات</h2>
       <div className="space-y-2">
-        {guideData.map((section) => (
+        {[...guideData].sort((a, b) => a.order - b.order).map((section) => (
           <button
             key={section.id}
             onClick={() => onSectionClick(section.id)}

@@ -223,7 +223,7 @@ export const guideData: GuideSection[] = [
     title: "قواعد السلوك والمظهر والانضباط",
     icon: "✨",
     color: "bg-rose-50",
-    order: 5,
+    order: 14,
     content: {
       introduction:
         "معايير السلوك والمظهر الشخصي المتوقعة من كل موظف في المطعم.",
@@ -319,7 +319,7 @@ export const guideData: GuideSection[] = [
     title: "مهام الشيفت الصباحي والمسائي",
     icon: "👨‍🍳",
     color: "bg-orange-50",
-    order: 7,
+    order: 5,
     content: {
       introduction: "تفاصيل مهام كل شيفت والمسؤوليات المحددة لكل فريق.",
       subsections: [
@@ -364,7 +364,7 @@ export const guideData: GuideSection[] = [
     title: "معايير الخدمة والتعامل مع الزبائن",
     icon: "🤝",
     color: "bg-indigo-50",
-    order: 8,
+    order: 11,
     content: {
       introduction:
         "معايير الخدمة المتوقعة لضمان تجربة زبون ممتازة وذكية.",
@@ -471,9 +471,9 @@ export const guideData: GuideSection[] = [
   {
     id: "closing",
     title: "خطة التشطيب والإغلاق اليومي",
-    icon: "🌙",
-    color: "bg-slate-50",
-    order: 10,
+    icon: "🎆",
+    color: "bg-red-50",
+    order: 7,
     content: {
       introduction:
         "خطة منظمة للتشطيب والإغلاق بشكل تدريجي وفعال دون تأخير.",
@@ -549,10 +549,10 @@ export const guideData: GuideSection[] = [
   },
   {
     id: "cash",
-    title: "إدارة الكاش والإجراءات المالية",
-    icon: "💰",
-    color: "bg-green-100",
-    order: 11,
+    title: "إدارة الكاش والإجرائات المالية",
+    icon: "💵",
+    color: "bg-green-50",
+    order: 8,
     content: {
       introduction:
         "إجراءات واضحة لإدارة النقود والعمليات المالية اليومية.",
@@ -686,9 +686,9 @@ export const guideData: GuideSection[] = [
   {
     id: "inventory",
     title: "الطلبيات والمخزون والتحضير",
-    icon: "📦",
+    icon: "📋",
     color: "bg-cyan-50",
-    order: 12,
+    order: 10,
     content: {
       introduction:
         "دليل عمليات المطبخ الصباحية والمسائية، دليل خطة التحضير اليومية والأسبوعية والشهرية.",
@@ -826,8 +826,8 @@ export const guideData: GuideSection[] = [
     id: "safety",
     title: "السلامة والطوارئ والصحة المهنية",
     icon: "🚨",
-    color: "bg-red-50",
-    order: 13,
+    color: "bg-red-100",
+    order: 12,
     content: {
       introduction:
         "معايير السلامة والصحة المهنية والإجراءات في حالات الطوارئ.",
@@ -873,9 +873,9 @@ export const guideData: GuideSection[] = [
   {
     id: "rights",
     title: "حقوق العاملين والشكاوى والمقترحات",
-    icon: "⚖️",
+    icon: "📚",
     color: "bg-lime-50",
-    order: 14,
+    order: 13,
     content: {
       introduction:
         "حقوق الموظفين والآليات المتاحة للشكاوى والمقترحات.",
