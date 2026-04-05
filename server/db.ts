@@ -599,7 +599,7 @@ export async function calculateDailyWaste(userId: number, productId: number, dat
   
   let quantityConsumed = 0;
 
-  const uniqueDishIds = [...new Set(sales.map((sale) => sale.dishId))];
+  const uniqueDishIds = Array.from(new Set(sales.map((sale) => sale.dishId)));
   if (uniqueDishIds.length > 0) {
     const ingredients = await db.select().from(dishIngredients)
       .where(and(
