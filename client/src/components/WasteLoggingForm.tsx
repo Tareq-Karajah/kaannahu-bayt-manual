@@ -66,6 +66,11 @@ export default function WasteLoggingForm() {
       alert("⚠️ يرجى اختيار منتج");
       return;
     }
+    const selectedProduct = products.find((product) => product.id === formData.productId);
+    if (!selectedProduct) {
+      alert("⚠️ المنتج المحدد غير متوفر");
+      return;
+    }
     if (formData.quantity <= 0) {
       alert("⚠️ يرجى إدخال كمية أكبر من صفر");
       return;
@@ -74,6 +79,7 @@ export default function WasteLoggingForm() {
     await createLogMutation.mutateAsync({
       productId: formData.productId,
       quantity: formData.quantity,
+      unit: selectedProduct.unit,
       reason: formData.reason,
       estimatedCost: formData.estimatedCost,
       wasteDate: formData.wasteDate,
