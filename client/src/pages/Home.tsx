@@ -7,7 +7,7 @@ import SectionView from "@/components/SectionView";
 import QuickActions from "@/components/QuickActions";
 import TableOfContents from "@/components/TableOfContents";
 import Footer from "@/components/Footer";
-import { guideData, homePageData } from "@/data/guideContent";
+import { guideData, homePageData, aboutProjectData } from "@/data/guideContent";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("intro");
@@ -77,6 +77,44 @@ export default function Home() {
             {/* Hero Section */}
             {activeSection === "intro" && (
               <div className="space-y-8">
+                {/* About Project Section */}
+                <div className="bg-gradient-to-l from-green-50 to-amber-50 dark:from-green-950/30 dark:to-amber-950/30 border border-green-200 dark:border-green-800 rounded-lg p-8">
+                  <h2 className="text-2xl font-bold text-foreground mb-6">
+                    {aboutProjectData.heading}
+                  </h2>
+                  
+                  <div className="space-y-4 mb-6">
+                    <p className="text-lg font-semibold text-foreground">
+                      {aboutProjectData.intro}
+                    </p>
+                    <div className="space-y-2 pr-6">
+                      {aboutProjectData.founders.map((founder, idx) => (
+                        <div key={idx} className="flex items-start gap-3">
+                          <span className="text-accent font-bold text-lg">•</span>
+                          <div>
+                            <p className="font-semibold text-foreground">{founder.name}</p>
+                            <p className="text-muted-foreground text-sm">{founder.role}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-6 mb-6 border border-green-100 dark:border-green-900">
+                    <p className="font-semibold text-foreground mb-3">
+                      {aboutProjectData.vision.heading}
+                    </p>
+                    <p className="text-foreground italic leading-relaxed">
+                      {aboutProjectData.vision.quote}
+                    </p>
+                  </div>
+                  
+                  <p className="text-foreground leading-relaxed">
+                    {aboutProjectData.today}
+                  </p>
+                </div>
+
+                {/* Welcome Section */}
                 <div className="bg-gradient-to-l from-primary/10 to-accent/10 border border-border rounded-lg p-8 text-center">
                   <h2 className="text-3xl font-bold text-foreground mb-4">
                     مرحباً بك في الدليل التشغيلي الموحد
