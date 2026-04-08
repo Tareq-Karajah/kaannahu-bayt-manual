@@ -1,0 +1,23 @@
+# Project TODO - كانه بيت
+
+- [x] Update color palette to match brand identity (maroon, golden, dark green, warm cream)
+- [x] Upload logo to CDN and set as app logo
+- [x] Create menu_items table in database schema
+- [x] Create menu_categories table in database schema
+- [x] Create ingredients table (اللحمة، الجاج، الخضرة، الخبز)
+- [x] Create daily_waste_entries table for tracking daily ingredient input
+- [x] Create weekly_sales_reports table for weekly sales data
+- [x] Create waste_calculations table/view for comparing input vs sales
+- [x] Seed database with menu items from the PDF menu
+- [x] Build API routes for menu CRUD operations
+- [x] Build API routes for daily waste entry (ingredients input)
+- [x] Build API routes for weekly sales reports
+- [x] Build API routes for waste calculation/comparison
+- [x] Design and build Dashboard home page with brand styling
+- [x] Design and build Menu display page
+- [x] Design and build Daily Waste Entry form (اللحمة، الجاج، الخضرة، الخبز)
+- [x] Design and build Weekly Sales Report entry form
+- [x] Design and build Waste Analysis/Comparison report page
+- [x] Update DashboardLayout with proper navigation and branding
+- [x] Write vitest tests for API routes
+- [ ] Push changes to GitHub

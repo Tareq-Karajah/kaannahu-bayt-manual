@@ -1,5 +1,27 @@
 {
   "version": "7",
   "dialect": "mysql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1775657708747,
+      "tag": "0000_burly_pestilence",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1775658121975,
+      "tag": "0001_dazzling_speedball",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1775658348013,
+      "tag": "0002_equal_silver_samurai",
+      "breakpoints": true
+    }
+  ]
 }
