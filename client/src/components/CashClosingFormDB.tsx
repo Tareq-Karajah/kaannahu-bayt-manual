@@ -252,7 +252,7 @@ export default function CashClosingFormDB() {
       ["تقرير تسكير الكاش"],
       [],
       ["اسم الموظف", record.employeeName],
-      ["اليوم والتاريخ", new Date(record.date).toLocaleDateString("ar-SA")],
+      ["اليوم والتاريخ", new Date(record.date).toLocaleDateString("en-US")],
       [],
       ["القسم الأول: تقرير السيستم"],
       ["Cash In", record.cashIn],
@@ -324,7 +324,7 @@ export default function CashClosingFormDB() {
 
       allData.push({
         "اسم الموظف": record.employeeName,
-        "اليوم والتاريخ": new Date(record.date).toLocaleDateString("ar-SA"),
+        "اليوم والتاريخ": new Date(record.date).toLocaleDateString("en-US"),
         "Cash In": record.cashIn,
         "Cash": record.cash,
         "Visa": record.visa,
@@ -795,7 +795,7 @@ export default function CashClosingFormDB() {
                       <tr key={record.id} className="border-b hover:bg-gray-50">
                         <td className="px-4 py-2">{record.employeeName}</td>
                         <td className="px-4 py-2">
-                          {new Date(record.date).toLocaleDateString("ar-SA")}
+                          {new Date(record.date).toLocaleDateString("en-US")}
                         </td>
                         <td className="px-4 py-2">{systemReport.toFixed(2)}</td>
                         <td className="px-4 py-2">{cashReport.toFixed(2)}</td>
