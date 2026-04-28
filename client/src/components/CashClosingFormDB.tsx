@@ -820,6 +820,7 @@ export default function CashClosingFormDB() {
                           )}
                         </td>
                         <td className="px-4 py-2">
+                          <div className="flex gap-2">
                             <Button
                               onClick={() => window.location.href = `/cash-closing-details?id=${record.id}`}
                               size="sm"
@@ -828,7 +829,6 @@ export default function CashClosingFormDB() {
                             >
                               👁️
                             </Button>
-                          <div className="flex gap-2">
                             <Button
                               onClick={() => exportToExcel(record)}
                               size="sm"

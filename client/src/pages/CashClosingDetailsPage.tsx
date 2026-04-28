@@ -119,15 +119,16 @@ export default function CashClosingDetailsPage() {
   }
 
   const displayRecord = isEditMode ? editedRecord : record;
-  const total1 = displayRecord.cashIn + displayRecord.cash + displayRecord.visa;
-  const systemReport = total1 - displayRecord.expenses;
-  const total2 = displayRecord.visaWells + displayRecord.visaFoodOnTime + displayRecord.visaMachine;
+  const n = (v: any) => parseFloat(String(v || 0)) || 0;
+  const total1 = n(displayRecord.cashIn) + n(displayRecord.cash) + n(displayRecord.visa);
+  const systemReport = total1 - n(displayRecord.expenses);
+  const total2 = n(displayRecord.visaWellsReport ?? displayRecord.visaWells) + n(displayRecord.visaFoodOnTimeReport ?? displayRecord.visaFoodOnTime) + n(displayRecord.visaMachineReport ?? displayRecord.visaMachine);
   const cashFromDenominations = SHEKEL_DENOMINATIONS.reduce((sum: number, denom: number) => {
     const fieldName = denom === 0.5 ? "shekelCoins05" : `shekelNotes${denom}`;
-    return sum + (denom * (displayRecord[fieldName] || 0));
+    return sum + (denom * n(displayRecord[fieldName]));
   }, 0);
-  const drawerTotal = displayRecord.drawerCount + cashFromDenominations + displayRecord.dollarAmount + displayRecord.dinarAmount;
-  const cashReport = drawerTotal + total2;
+  const drawerTotal = n(displayRecord.cashCountTotal ?? displayRecord.drawerCount) + n(displayRecord.dollarAmount) + n(displayRecord.dinarAmount);
+  const cashReport = drawerTotal + cashFromDenominations + total2;
   const difference = cashReport - systemReport;
 
   return (
