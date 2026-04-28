@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, deleteCashClosing, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, updateWasteLog, deleteWasteLog, saveWasteAlert, getWasteAlerts, updateWasteAlert, deleteWasteAlert, saveDailyQuantity, getDailyQuantities, updateDailyQuantity, deleteDailyQuantity, saveDish, getDishes, updateDish, deleteDish, saveDishIngredient, getDishIngredients, deleteDishIngredient, saveSalesItem, getSalesItems, getSalesItemsRange, deleteSalesItem, saveWasteCalculation, getWasteCalculations, getWasteCalculationsRange, calculateDailyWaste } from "./db";
+import { saveCashClosing, getCashClosingsByDate, getCashClosingHistory, deleteCashClosing, updateCashClosing, updateDailyStatistics, getDailyStatistics, saveProduct, getProducts, updateProduct, deleteProduct, saveWasteLog, getWasteLogs, updateWasteLog, deleteWasteLog, saveWasteAlert, getWasteAlerts, updateWasteAlert, deleteWasteAlert, saveDailyQuantity, getDailyQuantities, updateDailyQuantity, deleteDailyQuantity, saveDish, getDishes, updateDish, deleteDish, saveDishIngredient, getDishIngredients, deleteDishIngredient, saveSalesItem, getSalesItems, getSalesItemsRange, deleteSalesItem, saveWasteCalculation, getWasteCalculations, getWasteCalculationsRange, calculateDailyWaste } from "./db";
 import { InsertCashClosing } from "../drizzle/schema";
 
 export const appRouter = router({
@@ -105,6 +105,21 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         await deleteCashClosing(input.id);
         return { success: true };
+      }),
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        employeeName: z.string().optional(),
+        closingDate: z.string().optional(),
+        cashIn: z.string().optional(),
+        cash: z.string().optional(),
+        visa: z.string().optional(),
+        expenses: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        return updateCashClosing(id, data as any);
       }),
   }),
 

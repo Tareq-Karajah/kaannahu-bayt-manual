@@ -349,6 +349,14 @@ export async function getWasteAlerts(userId: number, status?: string): Promise<a
 }
 
 
+export async function updateCashClosing(id: number, data: any): Promise<any> {
+  const db = await getDb();
+  if (!db) { throw new Error("Database not available"); }
+  await db.update(cashClosings).set(data).where(eq(cashClosings.id, id));
+  const updated = await db.select().from(cashClosings).where(eq(cashClosings.id, id)).limit(1);
+  return updated[0] || null;
+}
+
 export async function deleteCashClosing(id: number): Promise<void> {
   const db = await getDb();
   if (!db) {
