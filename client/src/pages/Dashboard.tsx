@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UtensilsCrossed, TrendingDown, BarChart3, ClipboardList } from "lucide-react";

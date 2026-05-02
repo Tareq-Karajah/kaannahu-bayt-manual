@@ -29,6 +29,13 @@
       "when": 1775233339289,
       "tag": "0003_secret_sugar_man",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1777737749633,
+      "tag": "0004_unique_tyrannus",
+      "breakpoints": true
     }
   ]
 }

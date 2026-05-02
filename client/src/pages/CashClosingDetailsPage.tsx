@@ -106,12 +106,13 @@ export default function CashClosingDetailsPage() {
   const cash = n(disp.cash);
   const visa = n(disp.visa);
   const expenses = n(disp.expenses);
-  const total1 = cashIn + cash + visa;
-  const systemReport = total1 - expenses;
+  // Use stored DB values (calculated correctly when saved)
+  const total1 = n(disp.total1) || (cashIn + cash + visa);
+  const systemReport = n(disp.systemReport) || (total1 - expenses);
   const visaMachine = n(disp.visaMachineReport);
   const visaWells = n(disp.visaWellsReport);
   const visaFoodOnTime = n(disp.visaFoodOnTimeReport);
-  const total2 = visaMachine + visaWells + visaFoodOnTime;
+  const total2 = n(disp.total2) || (visaMachine + visaWells + visaFoodOnTime);
   const cashCountTotal = n(disp.cashCountTotal);
   const dollarAmount = n(disp.dollarAmount);
   const dinarAmount = n(disp.dinarAmount);
@@ -119,8 +120,9 @@ export default function CashClosingDetailsPage() {
     const key = denom === 0.5 ? "shekelCoins05" : `shekelNotes${denom}`;
     return sum + denom * n(disp[key]);
   }, 0);
-  const cashReport = cashCountTotal + cashFromDenominations + dollarAmount + dinarAmount + total2;
-  const difference = cashReport - systemReport;
+  // Use stored cashReport from DB - most accurate value
+  const cashReport = n(disp.cashReport) || (cashCountTotal + cashFromDenominations + dollarAmount + dinarAmount + total2);
+  const difference = n(disp.difference) !== 0 ? n(disp.difference) : (cashReport - systemReport);
 
   return (
     <div className="min-h-screen bg-background p-4" dir="rtl">
