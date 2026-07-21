@@ -127,15 +127,15 @@ export default function CashClosingFormDB() {
           visaMachine: parseFloat(record.visaMachineReport?.toString() || "0"),
         },
         cashDenominations: {
-          200: record.shekelNotes200 || 0,
-          100: record.shekelNotes100 || 0,
-          50: record.shekelNotes50 || 0,
-          20: record.shekelNotes20 || 0,
-          10: record.shekelNotes10 || 0,
-          5: record.shekelNotes5 || 0,
-          2: record.shekelCoins2 || 0,
-          1: record.shekelCoins1 || 0,
-          0.5: record.shekelCoins05 || 0,
+          200: parseInt(record.shekelNotes200?.toString() || "0"),
+          100: parseInt(record.shekelNotes100?.toString() || "0"),
+          50: parseInt(record.shekelNotes50?.toString() || "0"),
+          20: parseInt(record.shekelNotes20?.toString() || "0"),
+          10: parseInt(record.shekelNotes10?.toString() || "0"),
+          5: parseInt(record.shekelNotes5?.toString() || "0"),
+          2: parseInt(record.shekelCoins2?.toString() || "0"),
+          1: parseInt(record.shekelCoins1?.toString() || "0"),
+          0.5: parseFloat(record.shekelCoins05?.toString() || "0"),
         },
         dollarAmount: parseFloat(record.dollarAmount?.toString() || "0"),
         dinarAmount: parseFloat(record.dinarAmount?.toString() || "0"),
@@ -487,6 +487,12 @@ export default function CashClosingFormDB() {
               <div className="mt-4 p-3 bg-green-100 rounded-md border border-green-300">
                 <p className="text-sm text-green-900">
                   <strong>مجموع 1 (Cash In + Cash + Visa):</strong> {calculations.total1.toFixed(2)}
+                </p>
+              </div>
+
+              <div className="mt-2 p-3 bg-yellow-100 rounded-md border border-yellow-300">
+                <p className="text-sm text-yellow-900">
+                  <strong>مجموع (Cash + Visa) بدون Cash In:</strong> {(formData.cash + formData.visa).toFixed(2)}
                 </p>
               </div>
 
