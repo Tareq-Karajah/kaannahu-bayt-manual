@@ -201,6 +201,10 @@ export default function CashClosingDetailsPage() {
             <span className="font-semibold">مجموع 1 (الإيرادات)</span>
             <span className="text-xl font-bold text-amber-900">{total1.toFixed(2)}</span>
           </div>
+          <div className="mt-2 flex justify-between items-center bg-yellow-100 p-3 rounded-lg">
+            <span className="font-semibold">مجموع (الكاش + الفيزا) بدون الكاش الداخل</span>
+            <span className="text-xl font-bold text-yellow-900">{(cash + visa).toFixed(2)}</span>
+          </div>
         </Card>
 
         <Card className="p-6 border-2 border-amber-200">
