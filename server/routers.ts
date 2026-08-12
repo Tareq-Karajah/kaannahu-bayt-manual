@@ -115,6 +115,15 @@ export const appRouter = router({
         cash: z.string().optional(),
         visa: z.string().optional(),
         expenses: z.string().optional(),
+        shekelNotes200: z.number().optional(),
+        shekelNotes100: z.number().optional(),
+        shekelNotes50: z.number().optional(),
+        shekelNotes20: z.number().optional(),
+        shekelNotes10: z.number().optional(),
+        shekelNotes5: z.number().optional(),
+        shekelCoins2: z.number().optional(),
+        shekelCoins1: z.number().optional(),
+        shekelCoins05: z.number().optional(),
         notes: z.string().optional(),
       }))
       .mutation(async ({ input }) => {

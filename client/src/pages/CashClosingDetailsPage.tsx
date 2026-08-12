@@ -4,8 +4,12 @@ import { ArrowRight, Printer, Edit2, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-
-const SHEKEL_DENOMINATIONS = [200, 100, 50, 20, 10, 5, 2, 1, 0.5];
+import {
+  SHEKEL_DENOMINATIONS,
+  getCashDenominationField,
+  getCashDenominationPayload,
+  readCashDenominationCounts,
+} from "@/lib/cashDenominations";
 const n = (v: any) => parseFloat(String(v ?? 0)) || 0;
 
 export default function CashClosingDetailsPage() {
@@ -76,6 +80,7 @@ export default function CashClosingDetailsPage() {
       cash: String(editedRecord.cash ?? ""),
       visa: String(editedRecord.visa ?? ""),
       expenses: String(editedRecord.expenses ?? ""),
+      ...getCashDenominationPayload(readCashDenominationCounts(editedRecord)),
       notes: editedRecord.notes ?? "",
     });
   };
@@ -116,10 +121,11 @@ export default function CashClosingDetailsPage() {
   const cashCountTotal = n(disp.cashCountTotal);
   const dollarAmount = n(disp.dollarAmount);
   const dinarAmount = n(disp.dinarAmount);
-  const cashFromDenominations = SHEKEL_DENOMINATIONS.reduce((sum, denom) => {
-    const key = denom === 0.5 ? "shekelCoins05" : `shekelNotes${denom}`;
-    return sum + denom * n(disp[key]);
-  }, 0);
+  const cashDenominationCounts = readCashDenominationCounts(disp);
+  const cashFromDenominations = SHEKEL_DENOMINATIONS.reduce(
+    (sum, denom) => sum + denom * cashDenominationCounts[denom],
+    0,
+  );
   // Use stored cashReport from DB - most accurate value
   const cashReport = n(disp.cashReport) || (cashCountTotal + cashFromDenominations + dollarAmount + dinarAmount + total2);
   const difference = n(disp.difference) !== 0 ? n(disp.difference) : (cashReport - systemReport);
@@ -232,8 +238,8 @@ export default function CashClosingDetailsPage() {
           <h3 className="font-semibold text-amber-900 mb-3">الفئات النقدية</h3>
           <div className="grid grid-cols-3 gap-3">
             {SHEKEL_DENOMINATIONS.map((denom) => {
-              const key = denom === 0.5 ? "shekelCoins05" : `shekelNotes${denom}`;
-              const qty = n(disp[key]);
+              const key = getCashDenominationField(denom);
+              const qty = cashDenominationCounts[denom];
               return (
                 <div key={denom} className="bg-amber-50 p-3 rounded-lg">
                   <p className="text-sm text-gray-600">{denom} ₪</p>

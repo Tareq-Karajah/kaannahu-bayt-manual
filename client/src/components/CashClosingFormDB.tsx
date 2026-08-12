@@ -6,9 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import * as XLSX from "xlsx";
 import { trpc } from "@/lib/trpc";
-
-// فئات الشيكل
-const SHEKEL_DENOMINATIONS = [200, 100, 50, 20, 10, 5, 2, 1, 0.5];
+import {
+  SHEKEL_DENOMINATIONS,
+  calculateCashFromDenominationCounts,
+  getCashDenominationPayload,
+  readCashDenominationCounts,
+} from "@/lib/cashDenominations";
 
 interface CashDenominations {
   [key: number]: number;
@@ -126,17 +129,7 @@ export default function CashClosingFormDB() {
           visaFoodOnTime: parseFloat(record.visaFoodOnTimeReport?.toString() || "0"),
           visaMachine: parseFloat(record.visaMachineReport?.toString() || "0"),
         },
-        cashDenominations: {
-          200: parseInt(record.shekelNotes200?.toString() || "0"),
-          100: parseInt(record.shekelNotes100?.toString() || "0"),
-          50: parseInt(record.shekelNotes50?.toString() || "0"),
-          20: parseInt(record.shekelNotes20?.toString() || "0"),
-          10: parseInt(record.shekelNotes10?.toString() || "0"),
-          5: parseInt(record.shekelNotes5?.toString() || "0"),
-          2: parseInt(record.shekelCoins2?.toString() || "0"),
-          1: parseInt(record.shekelCoins1?.toString() || "0"),
-          0.5: parseFloat(record.shekelCoins05?.toString() || "0"),
-        },
+        cashDenominations: readCashDenominationCounts(record),
         dollarAmount: parseFloat(record.dollarAmount?.toString() || "0"),
         dinarAmount: parseFloat(record.dinarAmount?.toString() || "0"),
         notes: record.notes || "",
@@ -146,12 +139,8 @@ export default function CashClosingFormDB() {
   }, [dbRecords]);
 
   // حساب إجمالي الكاش من الفئات
-  const calculateCashFromDenominations = (denominations: CashDenominations) => {
-    return Object.entries(denominations).reduce(
-      (total, [denom, count]) => total + parseFloat(denom) * count,
-      0
-    );
-  };
+  const calculateCashFromDenominations = (denominations: CashDenominations) =>
+    calculateCashFromDenominationCounts(denominations);
 
   // الحسابات التلقائية
   const calculations = useMemo(() => {
@@ -202,15 +191,7 @@ export default function CashClosingFormDB() {
       total2: calculations.total2.toString(),
       cashReport: calculations.cashReport.toString(),
       difference: calculations.difference.toString(),
-      shekelNotes200: formData.cashDenominations[200],
-      shekelNotes100: formData.cashDenominations[100],
-      shekelNotes50: formData.cashDenominations[50],
-      shekelNotes20: formData.cashDenominations[20],
-      shekelNotes10: formData.cashDenominations[10],
-      shekelNotes5: formData.cashDenominations[5],
-      shekelCoins2: formData.cashDenominations[2],
-      shekelCoins1: formData.cashDenominations[1],
-      shekelCoins05: formData.cashDenominations[0.5],
+      ...getCashDenominationPayload(formData.cashDenominations),
       dollarAmount: formData.dollarAmount.toString(),
       dinarAmount: formData.dinarAmount.toString(),
       notes: formData.notes,
@@ -533,12 +514,13 @@ export default function CashClosingFormDB() {
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
                 {SHEKEL_DENOMINATIONS.map((denom) => (
-                  <div key={denom}>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">
-                      {denom} شيكل
+                  <div key={denom} className="bg-white p-3 rounded-lg border border-green-200">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {denom} ₪
                     </label>
                     <input
                       type="number"
+                      aria-label={`عدد فئة ${denom} شيكل`}
                       value={formData.cashDenominations[denom] || 0}
                       onChange={(e) =>
                         setFormData({

@@ -114,3 +114,20 @@
 - [x] إنشاء SalesForm لتسجيل المبيعات مع الأطباق
 - [x] إنشاء AdvancedWasteCalculator لحساب الهدر المتقدم
 - [x] إضافة 3 صفحات جديدة وربطها بالمسارات
+
+
+## Follow-up: Saved Cash Closing Denomination Bug
+- [x] Fix and regression-test the saved-report mapping for 1 and 2 shekel coins
+  - Added a shared mapping so 1₪ uses `shekelCoins1` and 2₪ uses `shekelCoins2`
+  - Added regression tests for mapping and denomination calculations
+- [x] Verify denomination values persist from the database through the details page and update mutation
+  - Saved preview record displayed `2 ₪: 22 × 2 = 44.00` and `1 ₪: 58 × 1 = 58.00`
+  - Details-page edits now send all denomination fields to the update procedure
+- [x] Run Vitest, TypeScript, and production build validation
+  - Targeted denomination tests: 3 passed
+  - TypeScript: passed
+  - Production build: passed
+  - Full suite still has unrelated pre-existing failures in `server/menu-waste.test.ts` and a capped-history assertion
+- [x] Save a new verified checkpoint
+
+Reported issue: the user confirms that the 1 and 2 shekel categories still display as zero in saved reports.

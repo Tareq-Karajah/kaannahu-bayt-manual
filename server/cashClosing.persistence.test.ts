@@ -40,8 +40,8 @@ describe("Cash Closing Persistence", () => {
       shekelNotes20: 0,
       shekelNotes10: 0,
       shekelNotes5: 0,
-      shekelCoins2: 0,
-      shekelCoins1: 0,
+      shekelCoins2: 11,
+      shekelCoins1: 13,
       shekelCoins05: 0,
       dollarAmount: "0",
       dinarAmount: "0",
@@ -55,6 +55,8 @@ describe("Cash Closing Persistence", () => {
     expect(saved.employeeName).toBe("Test Employee");
     // Database returns decimal format
     expect(saved.cashIn).toMatch(/^1000(\.0+)?$/);
+    expect(saved.shekelCoins2).toBe(11);
+    expect(saved.shekelCoins1).toBe(13);
   });
 
   it("should retrieve cash closing records from database", async () => {
